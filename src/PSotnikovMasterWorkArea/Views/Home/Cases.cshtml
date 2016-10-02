@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PSotnikovMasterWorkArea.Models.Case>
+@{
+    ViewBag.Title = "Cases List";
+}
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th> @Html.DisplayNameFor(model => model.ID) </th>
+        <th> @Html.DisplayNameFor(model => model.CaseName)    </th>
+        <th> @Html.DisplayNameFor(model => model.CaseDescription)  </th>
+        <th> @Html.DisplayNameFor(model => model.CreationDT) </th>
+        <th> Link </th>
+    </tr>
+
+  @foreach (var item in Model)
+  {
+    <tr>
+        <td> @Html.DisplayFor(modelItem => item.ID) </td>
+        <td> @Html.DisplayFor(modelItem => item.CaseName)    </td>
+        <td> @Html.DisplayFor(modelItem => item.CaseDescription)    </td>
+        <td> @Html.DisplayFor(modelItem => item.CreationDT) </td>
+        <td> @Html.ActionLink(
+                linkText: item.CaseName,
+                actionName: item.CaseName,
+                controllerName: "Home",
+                routeValues: null,
+                htmlAttributes: null) </td>
+    </tr>
+  }
+</table>

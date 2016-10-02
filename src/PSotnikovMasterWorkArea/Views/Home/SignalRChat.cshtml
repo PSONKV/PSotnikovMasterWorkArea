@@ -1,0 +1,164 @@
+﻿﻿@model IEnumerable<PSotnikovMasterWorkArea.Models.CaseSignalRChat.ChatAdminTableItem>
+@{
+    ViewBag.Title = "SignalR chat";
+}
+<h2>@ViewBag.Title</h2>
+
+<div>Welcome to SignalR chat, @Html.Label(User.Identity.Name + "!")</div>
+<br />
+<div>
+    Unfortunately, currently SignalR isn't supported within ASP.NET Core application.
+    Previous version of the case has been disabled. Looking forward to get SignalR functionality
+    <a href="https://github.com/aspnet/Home/wiki/Roadmap"> soon</a>.
+</div>
+<br />
+<input id="btnStartChat" type="button" value="Start Chat" class="submitButton" />
+<input id="btnDisconnect" type="button" value="Disconnect" class="submitButton" hidden />
+<br />
+
+<div>
+    <input id="txtMessage" type="text" class="ChatMsgInput" hidden />
+    <input id="btnSendMsg" type="button" value="Send" class="submitButton" hidden />
+</div>
+<br />
+
+<div id="divChatArea" class="ChatArea">
+    <div id="divChatWindow" class="ChatWindow"></div>
+    <div id="divUsers" class="UsersList"></div>
+    <div id="divChatAdminPanel" class="ChatAdminPanel">
+        <table class="table">
+            <tr>
+                <th> @Html.DisplayNameFor(model => model.UserName) </th>
+                <th> @Html.DisplayNameFor(model => model.Email)    </th>
+                <th> @Html.DisplayNameFor(model => model.UserCity)  </th>
+                <th> @Html.DisplayNameFor(model => model.LastMessageDT) </th>
+                <th> @Html.DisplayNameFor(model => model.IsConnected)   </th>
+                <th> @Html.DisplayNameFor(model => model.IPaddress)     </th>
+                <th> @Html.DisplayNameFor(model => model.NumMessagesToday) </th>
+                <th> @Html.DisplayNameFor(model => model.NumMessagesPerDayPerCity) </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.UserName) </td>
+                    <td> @Html.DisplayFor(modelItem => item.Email)    </td>
+                    <td> @Html.DisplayFor(modelItem => item.UserCity)    </td>
+                    <td> @Html.DisplayFor(modelItem => item.LastMessageDT) </td>
+                    <td> @Html.DisplayFor(modelItem => item.IsConnected)   </td>
+                    <td> @Html.DisplayFor(modelItem => item.IPaddress)     </td>
+                    <td> @Html.DisplayFor(modelItem => item.NumMessagesToday) </td>
+                    <td> @Html.DisplayFor(modelItem => item.NumMessagesPerDayPerCity) </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+<!------------------------------ End of mark-up -->
+
+
+<script type="text/javascript">
+
+    var chatProxy = $.connection.signalRChatHub; // Gets proxy instance using the auto-generated proxy class
+    var userName = "@User.Identity.Name"; //Takes user name from ASP Identity
+    var OutcomingMsgs = []; // array to accumulate messages when server is unavailable
+
+    $(function () {
+        //--- Client-side SignalR methods called from server-side
+        //Callback function, message will be displayed in the chat window
+        chatProxy.client.addMessage = function (msg_dt, userName, msg) {
+            $('#divChatWindow').append('<div>' + msg_dt + ' ' + userName + ': ' + msg + '</div>');
+        };
+
+        //Callback function, updates users list
+        chatProxy.client.updateUsers = function (usersList) {
+            $("#divUsers").empty();
+            for (i = 0; i < usersList.length; i++) {
+                $("#divUsers").append('<div> - ' + usersList[i].UserName +
+                                            ' (' + usersList[i].IsConnected + ')' + '</div>');
+            }
+        };
+        //---- End of client-side methods
+
+
+        // Register event handers
+        $('#btnStartChat').click(function () {
+            $('#divChatWindow').empty(); // clears chat window
+            $('#divUsers').empty();      // clears users list
+            chatProxy.server.connect(userName);
+            chatProxy.server.sendMessage(userName, "started.");
+            $('#btnStartChat').hide();  // hides "Start Chat" button
+            $('#btnSendMsg').show();    // activates "Send" button
+            $('#txtMessage').show();    // activates input message box
+            $('#btnDisconnect').show(); // activates "Disconnect" button
+        });
+
+        $('#btnSendMsg').click(function () {
+            var msg = $("#txtMessage").val();
+            if (msg.length > 0) {
+                if (chatProxy.connection.state == 1) { // if server is available
+                    if (OutcomingMsgs.length > 0) {
+                        while (OutcomingMsgs.length > 0) {
+                            // sends all accumulated messages from OutcomingMsgs array
+                            chatProxy.server.sendMessage(userName, OutcomingMsgs[0]);
+                            OutcomingMsgs.shift();// removes one message and decreases length -1
+                        }
+                        chatProxy.server.sendMessage(userName, msg);
+                    }
+                    else {
+                        chatProxy.server.sendMessage(userName, msg); // Call the SendMessage method on the hub
+                    }
+                }
+                else { // (if server is unavailable) it writes messages to OutcomingMsgs list
+                    OutcomingMsgs.push(msg);  // adds message to stack
+                    $.connection.hub.start(); // tries to reconnect...
+                }
+                $("#txtMessage").val('').focus(); // Clear input box and reset focus for next message
+            }
+        });
+        $('#txtMessage').keypress(function (e) {
+            if (e.which == 13) { $('#btnSendMsg').click(); }
+        });
+
+
+
+        $('#btnDisconnect').click(function () {
+            $.when(chatProxy.server.sendMessage(userName, "disconnected.")).done(function () {
+                chatProxy.server.disconnect(userName);
+                $('#btnStartChat').show();    // activates "Start Chat" button
+                $('#btnDisconnect').hide();   // hides "Disconnect" button
+                $('#btnSendMsg').hide();      // hides "Send" button
+                $('#txtMessage').hide();      // hides input message box
+                $('#divUsers').html("");      // clears users list
+                return false; // prevents page refresh
+            });
+        });
+
+        /*
+                //Sends messages from cache, accumulated when server was unavailable
+                //for (i = 0; i < MessagesInCache.length; i++)
+                //{
+                //    chatProxy.server.sendMessage(MessagesInCache[i].MessageAuthor, MessagesInCache[i].MessageText);
+                //}
+            }
+        */
+        // --- End of event handers
+
+        // SignalRHub starting
+        $.connection.hub.start();
+        $.connection.hub.start().done(function () {
+            console.log('Now connected, connection ID=' + chatProxy.connection.id);
+        });
+
+    });
+
+
+    $(window).on("beforeunload", function () {    // on chat page leaving
+        console.log("Handler for .beforeunload() called.");
+        chatProxy.server.disconnect(userName);
+        chatProxy.server.updateUsers();
+    });
+
+</script>

@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Numeral Pad";
+}
+<h2>@ViewBag.Title</h2>
+<div>The main requirement is to have fast and compact numeral pad.</div>
+<br />
+
+<section>
+    <form method="post">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-1">
+                    Numeral input:
+                </div>
+                <div class="col-md-3">
+                    <label id="lblNumInput" name="NumInput" class="form-control"></label>
+                </div>
+                <div class="col-md-1">
+                    <input id="btnSend" type="submit" class="btn-lg" value="Enter">
+                </div>   
+             </div>
+        </div>
+    </form>
+</section>
+
+<br />
+<div id="divNumButtons" class="">
+    <table class="table-condensed">
+        <tr>
+            <th><button id="btn0" type="button" class="btn-lg" onclick="updateNumInput(0)"> 0 </button></th>
+            <th><button id="btn1" type="button" class="btn-lg" onclick="updateNumInput(1)"> 1 </button></th>
+            <th><button id="btn2" type="button" class="btn-lg" onclick="updateNumInput(2)"> 2 </button></th>
+            <th><button id="btnBsp" type="button" class="btn-lg" onclick="updateNumInput('Bsp')"><--</button></th>
+        </tr>
+        <tr>
+            <th><button id="btn3" type="button" class="btn-lg" onclick="updateNumInput(3)"> 3 </button></th>
+            <th><button id="btn4" type="button" class="btn-lg" onclick="updateNumInput(4)"> 4 </button></th>
+            <th><button id="btn5" type="button" class="btn-lg" onclick="updateNumInput(5)"> 5 </button></th>
+            <th><button id="btnClear" type="button" class="btn-lg" onclick="updateNumInput('Clear')">Clear</button></th>
+        </tr>
+        <tr>
+            <th><button id="btn6" type="button" class="btn-lg" onclick="updateNumInput(6)"> 6 </button></th>
+            <th><button id="btn7" type="button" class="btn-lg" onclick="updateNumInput(7)"> 7 </button></th>
+            <th><button id="btn8" type="button" class="btn-lg" onclick="updateNumInput(8)"> 8 </button></th>
+            <th><button id="btn9" type="button" class="btn-lg" onclick="updateNumInput(9)"> 9 </button></th>
+        </tr>
+    </table>
+</div>
+<br />
+<!---- End of mark-up -->
+
+<script type="text/javascript">
+
+function updateNumInput(symbol){
+    var input = $("#lblNumInput").text();
+    if (!isNaN(symbol)) {
+        input = input + symbol;
+        input = space(input, 4);
+        $("#lblNumInput").text(input);//.trigger("eventLabelChanged"); // custom event
+    }
+    if (symbol == 'Clear') {
+        $("#lblNumInput").text("");
+    }
+    if (symbol == 'Bsp') {
+        input = input.trimRight();
+        input = input.slice(0, -1);
+        $("#lblNumInput").text(input);
+    }
+};
+
+/*
+$('#lblNumInput').on('eventLabelChanged', function () {
+  this.innerText = space(this.innerText, 4)
+});
+*/
+
+function space(str, after) {  // adds spaces after every ..4.. digits
+    if (!str) { return false; }
+    after = after || 4;
+    var v = str.replace(/[^\dA-Z]/g, ''),
+        reg = new RegExp(".{" + after + "}", "g");
+    return v.replace(reg, function (a) {
+        return a + ' ';
+    });
+}
+
+</script>
