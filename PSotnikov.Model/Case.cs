@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PSotnikovMasterWorkArea.Models
+namespace PSotnikov.Model
 {
+    /// <summary>
+    /// Represents a case study
+    /// </summary>
     public class Case
     {
        [Key]

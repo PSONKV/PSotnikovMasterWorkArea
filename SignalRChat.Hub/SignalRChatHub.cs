@@ -1,30 +1,43 @@
-﻿/*
- * 
-using System;
-using System.Web;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-//using Microsoft.AspNet.SignalR;
-using PSotnikovMasterWorkArea.Models;
+using Microsoft.AspNet.SignalR;
+using Microsoft.Extensions.Logging;
+using PSotnikov.Data.Model;
+using PSotnikov.Model;
 
-namespace PSotnikovMasterWorkArea.Hubs
+namespace SignalRChat.Model
 {
     public class SignalRChatHub : Hub
     {
+        private readonly IPSotnikovDataManager _psotnikovDataManager;
+        private readonly ILogger _logger;
+
+        public SignalRChatHub(ILoggerFactory loggerFactory, IPSotnikovDataManager psotnikovDataManager)
+        {
+            _psotnikovDataManager = psotnikovDataManager;
+            _logger = loggerFactory.CreateLogger(GetType());
+        }
+
 
         // Detects userIP, sets user as online and saves them into database
-        public void Connect(string userName)
+        public async void Connect(string userName)
         {
-            ApplicationUser user;
-            using (ApplicationDbContext dc = new ApplicationDbContext())
+            ApplicationUser user = await _psotnikovDataManager.GetUser(userName);
+
+            if (user == null)
             {
-                user = (from u in dc.Users
-                        where u.UserName == userName
-                        select u).First();
+
             }
+
             user.IsConnected = "online";
-            user.UserIP = HttpContext.Current.Request.UserHostAddress;
-            if (user.UserIP == "::1") { user.UserIP = "127.0.0.1"; }
+            //user.UserIP = HttpContext.Current.Request.UserHostAddress;
+
+            if (user.UserIP == "::1")
+            {
+                user.UserIP = "127.0.0.1";
+            }
+
             using (ApplicationDbContext an_dc = new ApplicationDbContext())
             {
                 an_dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
@@ -45,7 +58,10 @@ namespace PSotnikovMasterWorkArea.Hubs
             }
             user.IsConnected = "offline";
             user.UserIP = HttpContext.Current.Request.UserHostAddress;
-            if (user.UserIP == "::1") { user.UserIP = "127.0.0.1"; }
+            if (user.UserIP == "::1")
+            {
+                user.UserIP = "127.0.0.1";
+            }
             using (ApplicationDbContext an_dc = new ApplicationDbContext())
             {
                 an_dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
@@ -103,8 +119,5 @@ namespace PSotnikovMasterWorkArea.Hubs
                 dc.SaveChanges();
             }
         }
-
     }
 }
-
-*/

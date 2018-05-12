@@ -54,10 +54,7 @@
         </table>
     </div>
 </div>
-
-
 <!------------------------------ End of mark-up -->
-
 
 <script type="text/javascript">
 
@@ -76,12 +73,10 @@
         chatProxy.client.updateUsers = function (usersList) {
             $("#divUsers").empty();
             for (i = 0; i < usersList.length; i++) {
-                $("#divUsers").append('<div> - ' + usersList[i].UserName +
-                                            ' (' + usersList[i].IsConnected + ')' + '</div>');
+                $("#divUsers").append('<div> - ' + usersList[i].UserName + ' (' + usersList[i].IsConnected + ')' + '</div>');
             }
         };
         //---- End of client-side methods
-
 
         // Register event handers
         $('#btnStartChat').click(function () {
@@ -122,8 +117,6 @@
             if (e.which == 13) { $('#btnSendMsg').click(); }
         });
 
-
-
         $('#btnDisconnect').click(function () {
             $.when(chatProxy.server.sendMessage(userName, "disconnected.")).done(function () {
                 chatProxy.server.disconnect(userName);
@@ -151,7 +144,6 @@
         $.connection.hub.start().done(function () {
             console.log('Now connected, connection ID=' + chatProxy.connection.id);
         });
-
     });
 
 

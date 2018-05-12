@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace PSotnikovMasterWorkArea.Models
+namespace PSotnikov.Model
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
+    // Represents Application user, with inherited properties from EF Identity user
     public class ApplicationUser : IdentityUser
     {
         public string UserCity { get; set; }
+
         public string IsConnected { get; set; } = "offline";
+
         public string UserIP { get; set; }
 
         /*

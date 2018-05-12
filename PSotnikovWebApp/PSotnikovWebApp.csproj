@@ -12,6 +12,10 @@
     <UserSecretsId>aspnet-PSotnikovMasterWorkArea-eb47bec1-0245-4689-8e6f-ab6b1c0cbf36</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\ApplicationDbContext.cs" />
+  </ItemGroup>
+
   <!-- Configs -->
   <ItemGroup>
     <None Include="App.config">
@@ -97,5 +101,17 @@
     <None Update="wwwroot\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PSotnikov.Data.Model\PSotnikov.Data.Model.csproj" />
+    <ProjectReference Include="..\PSotnikov.Data.MSSQL\PSotnikov.Data.MSSQL.csproj" />
+    <ProjectReference Include="..\PSotnikov.Model\PSotnikov.Model.csproj" />
+    <ProjectReference Include="..\SignalRChat.Hub\SignalRChat.Hub.csproj" />
+    <ProjectReference Include="..\SignalRChat.Model\SignalRChat.Model.csproj" />
   </ItemGroup>
 </Project>

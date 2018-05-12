@@ -17,6 +17,9 @@ using Microsoft.Extensions.Logging;
 using PSotnikovMasterWorkArea.Data;
 using PSotnikovMasterWorkArea.Models;
 using PSotnikovMasterWorkArea.Services;
+using PSotnikov.Data.Model;
+using PSotnikov.Data.MSSQL;
+using PSotnikov.Model;
 
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
@@ -66,7 +69,6 @@ namespace PSotnikovMasterWorkArea
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("PSotnikov_SQLdb"));
-                
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -75,7 +77,7 @@ namespace PSotnikovMasterWorkArea
             services.AddMvc();
             //services.AddSignalR();
 
-            // Adding application services
+            // Adding application communication services
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
@@ -103,7 +105,6 @@ namespace PSotnikovMasterWorkArea
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -120,6 +121,10 @@ namespace PSotnikovMasterWorkArea
         // Don't build the container; that gets done for you.
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder
+                .RegisterType<PSotnikovMSSQLDataManager>()
+                .As<IPSotnikovDataManager>();
+
             /*
             ILogService logService = new LogService();
             ObjectFactoryProvider.Instance.Register<ILogService>(logService);

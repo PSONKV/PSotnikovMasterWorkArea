@@ -7,6 +7,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSotnikovWebApp", "PSotnikovWebApp\PSotnikovWebApp.csproj", "{EAF040EA-EB44-4F03-B991-0F4B26198631}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSotnikov.Data.MSSQL", "PSotnikov.Data.MSSQL\PSotnikov.Data.MSSQL.csproj", "{CE3F8A43-EC2A-446C-8F62-42109EFCBAEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSotnikov.Data.Model", "PSotnikov.Data.Model\PSotnikov.Data.Model.csproj", "{FB5BD1AE-7D1D-4EFC-B809-0119D57AAC1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalRChat", "SignalRChat", "{F515A92C-D1A3-46ED-818B-591E043085A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat.Model", "SignalRChat.Model\SignalRChat.Model.csproj", "{18F5048D-FE0B-41BD-B175-79FDB2DAD38C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat.Hub", "SignalRChat.Hub\SignalRChat.Hub.csproj", "{C7E7A592-83FB-42BD-9716-2E72A9B16007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSotnikov.Model", "PSotnikov.Model\PSotnikov.Model.csproj", "{E3BD8D78-5C9D-4128-8069-425058B3E783}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,9 +29,33 @@ Global
 		{EAF040EA-EB44-4F03-B991-0F4B26198631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAF040EA-EB44-4F03-B991-0F4B26198631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAF040EA-EB44-4F03-B991-0F4B26198631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE3F8A43-EC2A-446C-8F62-42109EFCBAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE3F8A43-EC2A-446C-8F62-42109EFCBAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE3F8A43-EC2A-446C-8F62-42109EFCBAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE3F8A43-EC2A-446C-8F62-42109EFCBAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB5BD1AE-7D1D-4EFC-B809-0119D57AAC1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB5BD1AE-7D1D-4EFC-B809-0119D57AAC1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB5BD1AE-7D1D-4EFC-B809-0119D57AAC1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB5BD1AE-7D1D-4EFC-B809-0119D57AAC1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18F5048D-FE0B-41BD-B175-79FDB2DAD38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18F5048D-FE0B-41BD-B175-79FDB2DAD38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18F5048D-FE0B-41BD-B175-79FDB2DAD38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18F5048D-FE0B-41BD-B175-79FDB2DAD38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E7A592-83FB-42BD-9716-2E72A9B16007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E7A592-83FB-42BD-9716-2E72A9B16007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E7A592-83FB-42BD-9716-2E72A9B16007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E7A592-83FB-42BD-9716-2E72A9B16007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BD8D78-5C9D-4128-8069-425058B3E783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BD8D78-5C9D-4128-8069-425058B3E783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BD8D78-5C9D-4128-8069-425058B3E783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BD8D78-5C9D-4128-8069-425058B3E783}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{18F5048D-FE0B-41BD-B175-79FDB2DAD38C} = {F515A92C-D1A3-46ED-818B-591E043085A7}
+		{C7E7A592-83FB-42BD-9716-2E72A9B16007} = {F515A92C-D1A3-46ED-818B-591E043085A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3434F06-4548-4481-9AA8-99DD2EFBAE91}
