@@ -1,4 +1,0 @@
-PSotnikovSQL.database.windows.net
-
-admin login: pso1
-password: Azure2024#
